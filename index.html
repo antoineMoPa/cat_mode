@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+          font-family: 'Noto Sans';
+          font-weight: 400;
+          background: #eeeeef;
+      }
+      button {
+          background: #112266;
+          color: #FFFFFF;
+          border: none;
+          padding: 10px;
+          border-radius:3px;
+          box-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+          cursor: pointer;
+          transition: all 0.3s;
+          margin-right:20px;
+      }
+      button:hover {
+          box-shadow: 0px 0px 30px rgba(0,0,0,0.3);
+      }
+      .center {
+          text-align: center;
+      }
+      .content {
+          max-width: 930px;
+          margin: auto;
+          margin-top:40px;
+          background: #ffffff;
+          padding:30px;
+          border-radius: 10px;
+          box-shadow: 0px 0px 30px rgba(0,0,0,0.1);
+      }
+      h1 {
+          cursor: pointer;
+          font-weight: 300;
+      }
+      .cat {
+          position:absolute;
+          z-index: 4000;
+          font-size:60px;
+          cursor:none;
+      }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700,700i" rel="stylesheet" type="text/css">
+    <meta charset="utf-8"/>
+  </head>
+  <body>
+    <div class="content">
+      <div class="center">
+        <h1>Hello</h1>
+      </div>
+      <button onclick="launchCatMode()">Cat Mode 🐈</button><br/><br/>
+    </div>
+    <script type="module">
+      const title = document.querySelectorAll('h1')[0];
+      const counter = 0;
+      let catMode = false;
+
+      const addCat = (x,y,size) => {
+          const div = document.createElement('div');
+          div.classList.add('cat');
+          div.style.left = x + "px";
+          div.style.top = y + "px";
+          div.innerText =  "🐈";// Math.random() < 0.5 ? "🐈" : "🐱";
+          document.body.appendChild(div);
+          div.style.fontSize = size + "px";
+          div.style.opacity = 1;
+      };
+
+      const launchCatMode = () => {
+          title.innerText = '🐈 CAT MODE ACTIVATED 🐈';
+          for (let i = 0; i < 30; i++) {
+              addCat(Math.random() * window.innerWidth, Math.random() * window.innerHeight, Math.random() * 100 + 20);
+          }
+          if (!catMode) {
+              setInterval(() => {
+                  document.querySelectorAll('div.cat').forEach(c => {
+                      const y = parseInt(c.style.top);
+                      c.style.top = (y + 2) + "px";
+                      if (Math.random() < 0.05) {
+                          document.body.removeChild(c);
+                      }
+                  });
+              }, 100);
+          }
+          catMode = true;
+      };
+
+      window.launchCatMode = launchCatMode;
+
+      window.addEventListener('mousemove', (e) => {
+          if (catMode) {
+              addCat(e.x + Math.random() * 50, e.y + Math.random() * 50 + window.scrollY, Math.random() * 40 + 20);
+          }
+      })
+
+    </script>
+  </body>
+</html>
